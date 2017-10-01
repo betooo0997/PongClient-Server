@@ -16,3 +16,21 @@ c:\users\beto\documents\visual studio 2015\Projects\PongClient\PongClient\PongCl
 c:\users\beto\documents\visual studio 2015\Projects\PongClient\PongClient\PongClient\obj\x86\Debug\PongClient.pdb
 c:\users\beto\documents\visual studio 2015\Projects\PongClient\PongClient\PongClient\bin\x86\Debug\Content\Pixel.xnb
 c:\users\beto\documents\visual studio 2015\Projects\PongClient\PongClient\PongClient\bin\x86\Debug\Content\Font1.xnb
+D:\Users\Alberto\Desktop\PongClient&Server\PongClient\PongClient\PongClient\bin\x86\Debug\Content\Pixel.xnb
+D:\Users\Alberto\Desktop\PongClient&Server\PongClient\PongClient\PongClient\bin\x86\Debug\Content\Font1.xnb
+D:\Users\Alberto\Desktop\PongClient&Server\PongClient\PongClient\PongClient\bin\x86\Debug\PongClient.exe
+D:\Users\Alberto\Desktop\PongClient&Server\PongClient\PongClient\PongClient\bin\x86\Debug\PongClient.pdb
+D:\Users\Alberto\Desktop\PongClient&Server\PongClient\PongClient\PongClient\bin\x86\Debug\Microsoft.Xna.Framework.dll
+D:\Users\Alberto\Desktop\PongClient&Server\PongClient\PongClient\PongClient\bin\x86\Debug\Microsoft.Xna.Framework.Game.dll
+D:\Users\Alberto\Desktop\PongClient&Server\PongClient\PongClient\PongClient\bin\x86\Debug\Microsoft.Xna.Framework.GamerServices.dll
+D:\Users\Alberto\Desktop\PongClient&Server\PongClient\PongClient\PongClient\bin\x86\Debug\Microsoft.Xna.Framework.Graphics.dll
+D:\Users\Alberto\Desktop\PongClient&Server\PongClient\PongClient\PongClient\bin\x86\Debug\Microsoft.Xna.Framework.Input.Touch.dll
+D:\Users\Alberto\Desktop\PongClient&Server\PongClient\PongClient\PongClient\bin\x86\Debug\Microsoft.Xna.Framework.xml
+D:\Users\Alberto\Desktop\PongClient&Server\PongClient\PongClient\PongClient\bin\x86\Debug\Microsoft.Xna.Framework.Game.xml
+D:\Users\Alberto\Desktop\PongClient&Server\PongClient\PongClient\PongClient\bin\x86\Debug\Microsoft.Xna.Framework.Graphics.xml
+D:\Users\Alberto\Desktop\PongClient&Server\PongClient\PongClient\PongClient\bin\x86\Debug\Microsoft.Xna.Framework.GamerServices.xml
+D:\Users\Alberto\Desktop\PongClient&Server\PongClient\PongClient\PongClient\bin\x86\Debug\Microsoft.Xna.Framework.Input.Touch.xml
+D:\Users\Alberto\Desktop\PongClient&Server\PongClient\PongClient\PongClient\obj\x86\Debug\PongClient.csprojResolveAssemblyReference.cache
+D:\Users\Alberto\Desktop\PongClient&Server\PongClient\PongClient\PongClient\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
+D:\Users\Alberto\Desktop\PongClient&Server\PongClient\PongClient\PongClient\obj\x86\Debug\PongClient.exe
+D:\Users\Alberto\Desktop\PongClient&Server\PongClient\PongClient\PongClient\obj\x86\Debug\PongClient.pdb

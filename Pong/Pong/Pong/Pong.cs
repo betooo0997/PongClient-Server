@@ -16,8 +16,13 @@ namespace PongServer
     /// </summary>
     public class Pong : Microsoft.Xna.Framework.Game
     {
+        public static bool frameUpdate = false;
+
+
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+
+        
 
         State_Menu state_menu;
         State_Playing state_playing;
@@ -103,6 +108,7 @@ namespace PongServer
             currentState = targetState;
 
             currentState.Update(gameTime);
+            frameUpdate = true;
 
             base.Update(gameTime);
         }

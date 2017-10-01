@@ -24,6 +24,15 @@ namespace PongClient
 
         void ProcessData()
         {
+            string[] tokens = data.Split(' ');
+
+            if (data.StartsWith("B"))
+            {
+                Vector2 ballPosition = new Vector2(float.Parse(tokens[1]), float.Parse(tokens[2]));
+                Pong.ball.Position = ballPosition;
+                return;
+            }
+
             if (data.Length <= 2 && SocketClient.PlayerID != 0)
                 return;
 
@@ -35,20 +44,13 @@ namespace PongClient
                 return;
             }
 
-            string[] tokens = data.Split(' ');
+            tokens = data.Split(' ');
 
-            if (tokens[0] == "B")
-            {
+            int position0 = int.Parse(tokens[0]);
+            int position1 = int.Parse(tokens[1]);
 
-            }
-            else
-            {
-                int position0 = int.Parse(tokens[0]);
-                int position1 = int.Parse(tokens[1]);
-
-                Player.players[0].Position = new Vector2(Player.players[0].Position.X, position0);
-                Player.players[1].Position = new Vector2(Player.players[1].Position.X, position1);
-            }
+            Player.players[0].Position = new Vector2(Player.players[0].Position.X, position0);
+            Player.players[1].Position = new Vector2(Player.players[1].Position.X, position1);
         }
     }
 }

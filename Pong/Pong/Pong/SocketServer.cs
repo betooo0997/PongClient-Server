@@ -73,11 +73,5 @@ namespace PongServer
                 HandleClient client = new HandleClient(newSocket);
             }
         }
-
-        public void SendBallData()
-        {
-            string data = "B " + Ball.Position.X + " " + Ball.Position.Y;
-            byte[] bytedata = Encoding.UTF8.GetBytes(data);
-        }
     }
 }

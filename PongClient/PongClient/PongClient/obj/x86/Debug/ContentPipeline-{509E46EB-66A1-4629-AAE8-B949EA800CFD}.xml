@@ -7,7 +7,7 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>c:\users\beto\documents\visual studio 2015\Projects\PongClient\PongClient\PongClient\bin\x86\Debug\Content\Pixel.xnb</Output>
+      <Output>D:\Users\Alberto\Desktop\PongClient&amp;Server\PongClient\PongClient\PongClient\bin\x86\Debug\Content\Pixel.xnb</Output>
       <Time>2017-09-29T00:09:30.1084317+02:00</Time>
     </Item>
     <Item>
@@ -16,7 +16,7 @@
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
       <Options>None</Options>
-      <Output>c:\users\beto\documents\visual studio 2015\Projects\PongClient\PongClient\PongClient\bin\x86\Debug\Content\Font1.xnb</Output>
+      <Output>D:\Users\Alberto\Desktop\PongClient&amp;Server\PongClient\PongClient\PongClient\bin\x86\Debug\Content\Font1.xnb</Output>
       <Time>2017-09-28T21:01:11.985322+02:00</Time>
     </Item>
     <BuildSuccessful>true</BuildSuccessful>
@@ -26,10 +26,10 @@
       <TargetProfile>Reach</TargetProfile>
       <BuildConfiguration>Debug</BuildConfiguration>
       <CompressContent>false</CompressContent>
-      <RootDirectory>c:\users\beto\documents\visual studio 2015\Projects\PongClient\PongClient\PongClientContent\</RootDirectory>
-      <LoggerRootDirectory>c:\users\beto\documents\visual studio 2015\Projects\PongClient\PongClient\PongClient\</LoggerRootDirectory>
-      <IntermediateDirectory>c:\users\beto\documents\visual studio 2015\Projects\PongClient\PongClient\PongClient\obj\x86\Debug\</IntermediateDirectory>
-      <OutputDirectory>c:\users\beto\documents\visual studio 2015\Projects\PongClient\PongClient\PongClient\bin\x86\Debug\Content\</OutputDirectory>
+      <RootDirectory>D:\Users\Alberto\Desktop\PongClient&amp;Server\PongClient\PongClient\PongClientContent\</RootDirectory>
+      <LoggerRootDirectory>D:\Users\Alberto\Desktop\PongClient&amp;Server\PongClient\PongClient\PongClient\</LoggerRootDirectory>
+      <IntermediateDirectory>D:\Users\Alberto\Desktop\PongClient&amp;Server\PongClient\PongClient\PongClient\obj\x86\Debug\</IntermediateDirectory>
+      <OutputDirectory>D:\Users\Alberto\Desktop\PongClient&amp;Server\PongClient\PongClient\PongClient\bin\x86\Debug\Content\</OutputDirectory>
     </Settings>
     <Assemblies>
       <Assembly>

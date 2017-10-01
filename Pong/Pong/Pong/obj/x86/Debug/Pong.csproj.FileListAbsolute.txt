@@ -16,3 +16,21 @@ c:\users\beto\documents\visual studio 2015\Projects\Pong\Pong\Pong\obj\x86\Debug
 c:\users\beto\documents\visual studio 2015\Projects\Pong\Pong\Pong\obj\x86\Debug\Pong.exe
 c:\users\beto\documents\visual studio 2015\Projects\Pong\Pong\Pong\obj\x86\Debug\Pong.pdb
 C:\Users\Beto\Documents\Visual Studio 2015\Projects\Pong\Pong\Pong\bin\x86\Debug\Content\Pixel.xnb
+D:\Users\Alberto\Desktop\PongClient&Server\Pong\Pong\Pong\bin\x86\Debug\Content\Font1.xnb
+D:\Users\Alberto\Desktop\PongClient&Server\Pong\Pong\Pong\bin\x86\Debug\Content\Pixel.xnb
+D:\Users\Alberto\Desktop\PongClient&Server\Pong\Pong\Pong\bin\x86\Debug\Pong.exe
+D:\Users\Alberto\Desktop\PongClient&Server\Pong\Pong\Pong\bin\x86\Debug\Pong.pdb
+D:\Users\Alberto\Desktop\PongClient&Server\Pong\Pong\Pong\bin\x86\Debug\Microsoft.Xna.Framework.dll
+D:\Users\Alberto\Desktop\PongClient&Server\Pong\Pong\Pong\bin\x86\Debug\Microsoft.Xna.Framework.Game.dll
+D:\Users\Alberto\Desktop\PongClient&Server\Pong\Pong\Pong\bin\x86\Debug\Microsoft.Xna.Framework.GamerServices.dll
+D:\Users\Alberto\Desktop\PongClient&Server\Pong\Pong\Pong\bin\x86\Debug\Microsoft.Xna.Framework.Graphics.dll
+D:\Users\Alberto\Desktop\PongClient&Server\Pong\Pong\Pong\bin\x86\Debug\Microsoft.Xna.Framework.Input.Touch.dll
+D:\Users\Alberto\Desktop\PongClient&Server\Pong\Pong\Pong\bin\x86\Debug\Microsoft.Xna.Framework.xml
+D:\Users\Alberto\Desktop\PongClient&Server\Pong\Pong\Pong\bin\x86\Debug\Microsoft.Xna.Framework.Game.xml
+D:\Users\Alberto\Desktop\PongClient&Server\Pong\Pong\Pong\bin\x86\Debug\Microsoft.Xna.Framework.Graphics.xml
+D:\Users\Alberto\Desktop\PongClient&Server\Pong\Pong\Pong\bin\x86\Debug\Microsoft.Xna.Framework.GamerServices.xml
+D:\Users\Alberto\Desktop\PongClient&Server\Pong\Pong\Pong\bin\x86\Debug\Microsoft.Xna.Framework.Input.Touch.xml
+D:\Users\Alberto\Desktop\PongClient&Server\Pong\Pong\Pong\obj\x86\Debug\Pong.csprojResolveAssemblyReference.cache
+D:\Users\Alberto\Desktop\PongClient&Server\Pong\Pong\Pong\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
+D:\Users\Alberto\Desktop\PongClient&Server\Pong\Pong\Pong\obj\x86\Debug\Pong.exe
+D:\Users\Alberto\Desktop\PongClient&Server\Pong\Pong\Pong\obj\x86\Debug\Pong.pdb

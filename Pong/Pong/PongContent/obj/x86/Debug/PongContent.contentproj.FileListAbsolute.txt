@@ -1,0 +1,1 @@
+c:\users\beto\documents\visual studio 2015\Projects\Pong\Pong\PongContent\obj\x86\Debug\PongContent.contentprojResolveAssemblyReference.cache

@@ -1,0 +1,2 @@
+Content\Font1.xnb
+Content\Pixel.xnb

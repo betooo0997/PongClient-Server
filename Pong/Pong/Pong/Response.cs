@@ -32,12 +32,12 @@ namespace PongServer
             {
                 case RequestType.MoveUp:
                     Player.players[request.PlayerID - 1].Move(-1);
-                    bytedata = Encoding.UTF8.GetBytes(Player.GetPositions());
+                    bytedata = Encoding.UTF8.GetBytes(Player.GetPositions() + '!');
                     break;
 
                 case RequestType.MoveDown:
                     Player.players[request.PlayerID - 1].Move(1);
-                    bytedata = Encoding.UTF8.GetBytes(Player.GetPositions());
+                    bytedata = Encoding.UTF8.GetBytes(Player.GetPositions() + '!');
                     break;
 
                 case RequestType.Pause:
@@ -47,11 +47,11 @@ namespace PongServer
                     break;
 
                 case RequestType.RegisterPlayer:
-                    bytedata = Encoding.UTF8.GetBytes(request.PlayerID.ToString());
+                    bytedata = Encoding.UTF8.GetBytes(request.PlayerID.ToString() + '!');
                     break;
 
                 case RequestType.Undefined:
-                    bytedata = Encoding.UTF8.GetBytes(Player.GetPositions());
+                    bytedata = Encoding.UTF8.GetBytes(Player.GetPositions() + '!');
                     break;
             }
         }

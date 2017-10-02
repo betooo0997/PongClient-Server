@@ -20,8 +20,6 @@ namespace PongClient
         protected static SpriteBatch spriteBatch;
         protected Texture2D texture;
 
-        public Vector2 Position;
-
         public static void SetSpriteBatch(SpriteBatch spriteBatch, ContentManager content)
         {
             NonPlayerEntities = new Entity[0];

@@ -63,7 +63,7 @@ namespace PongClient
             players = new Player[2];
             players[0] = new Player(10);
             players[1] = new Player(GraphicsDevice.Viewport.Width - 25);
-            ball = new Ball(new Vector2());
+            ball = new Ball(GraphicsDevice);
         }
 
         /// <summary>
@@ -85,6 +85,9 @@ namespace PongClient
             currKeyState = Keyboard.GetState();
             deltaTime = gameTime.ElapsedGameTime.Milliseconds;
             SocketClient.FrameUpdate = true;
+
+            foreach (Entity entity in Entity.NonPlayerEntities)
+                entity.Update(gameTime);
 
             base.Update(gameTime);
         }

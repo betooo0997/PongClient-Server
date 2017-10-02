@@ -21,7 +21,7 @@ namespace PongClient {
 
         static IPEndPoint remoteEP;
 
-        static int MaxDelay = 100;
+        static int MaxDelay = 500;
         static float delay = 0;
 
         public static double SocketID;
@@ -100,13 +100,10 @@ namespace PongClient {
         {
             while (true)
             {
-                if (!FrameUpdate && sender != null)
+                if (!FrameUpdate && sender != null && sender.Connected)
                 {
                     int a = sender.Receive(bytes);
-
-                    string data = Encoding.UTF8.GetString(bytes, 0, a);
-
-                    DataHandle dataHandler = new DataHandle(sender, data);
+                    DataHandle dataHandler = new DataHandle(sender, bytes, a);
                 }
             }
         }

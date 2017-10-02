@@ -16,6 +16,8 @@ namespace PongServer
     {
         public static State_Playing Singleton { get; private set; }
 
+        bool startedGame = false;
+
         public State_Playing()
         {
             Start();
@@ -24,8 +26,17 @@ namespace PongServer
 
         public override void Update(GameTime gameTime)
         {
-            foreach (Entity entity in Entity.NonPlayerEntities)
-                entity.Update(gameTime);
+            if (startedGame)
+            {
+                foreach (Entity entity in Entity.NonPlayerEntities)
+                    entity.Update(gameTime);
+            }
+            else
+            {
+                KeyboardState keyState = Keyboard.GetState();
+                if (keyState.IsKeyDown(Keys.Space))
+                    startedGame = true;
+            }
 
             base.Update(gameTime);
         }

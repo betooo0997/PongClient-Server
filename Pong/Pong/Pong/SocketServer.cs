@@ -70,7 +70,7 @@ namespace PongServer
 
                 Socket newSocket = listener.Accept();
 
-                HandleClient client = new HandleClient(newSocket);
+                HandleClient newClient = new HandleClient(newSocket);
             }
         }
     }

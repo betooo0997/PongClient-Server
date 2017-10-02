@@ -14,7 +14,7 @@ namespace PongServer
 {
     public class Ball : Entity
     {
-        Vector2 speed;
+        public static Vector2 directionVector { get; protected set; }
         Vector2 size;
 
         GraphicsDevice graphicsDevice;
@@ -24,7 +24,6 @@ namespace PongServer
         Vector2 windowSize;
 
         public static Vector2 Position { get; protected set; }
-
 
 
         public Ball(GraphicsDevice graphicsDevice)
@@ -37,7 +36,7 @@ namespace PongServer
             LoadContent();
 
             Random random = new Random();
-            speed = Vector2.Normalize(new Vector2((float)random.NextDouble() - 0.5f, (float)random.NextDouble() - 0.5f)) * 2;
+            directionVector = Vector2.Normalize(new Vector2((float)random.NextDouble() - 0.5f, (float)random.NextDouble() - 0.5f)) * 2;
             size = new Vector2(10, 10);
             windowSize = new Vector2(graphicsDevice.Viewport.Width, graphicsDevice.Viewport.Height);
         }
@@ -57,11 +56,11 @@ namespace PongServer
             switch (axis)
             {
                 case Axis.X:
-                    speed.X *= -1;
+                    directionVector = new Vector2(-directionVector.X, directionVector.Y);
                     break;
 
                 case Axis.Y:
-                    speed.Y *= -1;
+                    directionVector = new Vector2(directionVector.X, -directionVector.Y);
                     break;
             }
         }
@@ -70,7 +69,7 @@ namespace PongServer
         {
             if (!paused)
             {
-                Position += speed;
+                Position += directionVector;
 
                 CheckBorderCollision(new Vector2(windowSize.X, windowSize.Y / 2), new Vector2(2, windowSize.Y), 1);
                 CheckBorderCollision(new Vector2(0, windowSize.Y / 2), new Vector2(2, windowSize.Y), 2);
@@ -109,6 +108,8 @@ namespace PongServer
                     objectPosition.Y + objectSize.Y > Position.Y && objectPosition.Y < Position.Y + size.Y)
                 {
                     Collision(Axis.X);
+                    HandleClient.SendBallDataToAllClients();
+
                 }
             }
         }

@@ -14,14 +14,22 @@ namespace PongClient
 {
     public class Ball : Entity
     {
-        Vector2 Speed;
+        public static Vector2 directionVector;
+        public static Vector2 Position;
+        static Vector2 size;
+        Vector2 windowSize;
 
-        public Ball(Vector2 StartPosition)
+
+        public Ball(GraphicsDevice graphicsDevice)
         {
             AddToArray(this);
 
-            Position = StartPosition;
+            Position = new Vector2();
+            directionVector = new Vector2();
             LoadContent();
+            size = new Vector2(10, 10);
+
+            windowSize = new Vector2(graphicsDevice.Viewport.Width, graphicsDevice.Viewport.Height);
         }
 
         void LoadContent()
@@ -29,15 +37,46 @@ namespace PongClient
             texture = content.Load<Texture2D>("Pixel");
         }
 
-        public void setPosition(Vector2 Position)
+        void Collision(Axis axis)
         {
-            this.Position = Position;
+            switch (axis)
+            {
+                case Axis.X:
+                    directionVector = new Vector2(-directionVector.X, directionVector.Y);
+                    break;
+
+                case Axis.Y:
+                    directionVector = new Vector2(directionVector.X, -directionVector.Y);
+                    break;
+            }
         }
+
+        void CheckBorderCollision(Vector2 objectPosition, Vector2 objectSize, int? PlayerID = null)
+        {
+            if (Position.X + size.X > objectPosition.X && Position.X < objectPosition.X + objectSize.X ||
+                objectPosition.X + objectSize.X > Position.X && objectPosition.X < Position.X + size.X)
+            {
+                Collision(Axis.X);
+            }
+
+            if (Position.Y + size.Y > objectPosition.Y && Position.Y < objectPosition.Y + objectSize.Y ||
+                objectPosition.Y + objectSize.Y > Position.Y && objectPosition.Y < Position.Y + size.Y)
+            {
+                Collision(Axis.Y);
+            }
+        }
+
 
         public override void Update(GameTime gameTime)
         {
-            Position += Speed;
+            Position += directionVector;
+
+            CheckBorderCollision(new Vector2(windowSize.X, windowSize.Y / 2), new Vector2(2, windowSize.Y), 1);
+            CheckBorderCollision(new Vector2(0, windowSize.Y / 2), new Vector2(2, windowSize.Y), 2);
+            CheckBorderCollision(new Vector2(windowSize.X / 2, windowSize.Y), new Vector2(windowSize.X, 2));
+            CheckBorderCollision(new Vector2(windowSize.X / 2, 0), new Vector2(windowSize.X, 2));
         }
+
 
         public override void Draw(GameTime gameTime)
         {

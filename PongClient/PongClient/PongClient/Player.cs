@@ -18,6 +18,8 @@ namespace PongClient
         public int Points { get; private set; }
         bool contentLoaded = false;
 
+        public Vector2 Position;
+
         public int ID { get; private set; }
 
         public Player(float PositionX)

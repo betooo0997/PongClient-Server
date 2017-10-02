@@ -18,9 +18,8 @@ namespace PongServer
             this.handler = handler;
             AddToArray(this);
 
-            Thread ballSending = new Thread(SendBallData);
-            ballSending.Start();
-            HandleClientData();
+            Thread datahandling = new Thread(HandleClientData);
+            datahandling.Start();
         }
 
         static void AddToArray(HandleClient newClient)
@@ -56,16 +55,17 @@ namespace PongServer
 
         public static void SendBallDataToAllClients()
         {
-            if (clients == null)
-                return;
-
-            foreach(HandleClient client in clients)
+            if (clients != null && Ball.timeSinceLastClientSync > Ball.limitTimeSinceSync / 2)
             {
-                Thread sendBallData = new Thread(client.SendBallData);
-                sendBallData.Start();
-            }
+                foreach (HandleClient client in clients)
+                {
+                    Thread sendBallData = new Thread(client.SendBallData);
+                    sendBallData.Start();
+                }
 
-            Console.Write("Ball data sent to all clients.");
+                Console.Write("Ball data sent to all clients.");
+                Ball.timeSinceLastClientSync = 0;
+            }
         }
 
         void SendBallData()

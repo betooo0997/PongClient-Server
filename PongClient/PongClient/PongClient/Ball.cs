@@ -69,7 +69,7 @@ namespace PongClient
 
         public override void Update(GameTime gameTime)
         {
-            Position += directionVector;
+            Position += directionVector * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             CheckBorderCollision(new Vector2(windowSize.X, windowSize.Y / 2), new Vector2(2, windowSize.Y), 1);
             CheckBorderCollision(new Vector2(0, windowSize.Y / 2), new Vector2(2, windowSize.Y), 2);

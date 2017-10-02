@@ -23,6 +23,9 @@ namespace PongServer
 
         Vector2 windowSize;
 
+        public static float limitTimeSinceSync = 1.5f;
+        public static float timeSinceLastClientSync = 0;
+
         public static Vector2 Position { get; protected set; }
 
 
@@ -36,7 +39,7 @@ namespace PongServer
             LoadContent();
 
             Random random = new Random();
-            directionVector = Vector2.Normalize(new Vector2((float)random.NextDouble() - 0.5f, (float)random.NextDouble() - 0.5f)) * 2;
+            directionVector = Vector2.Normalize(new Vector2((float)random.NextDouble() - 0.5f, (float)random.NextDouble() - 0.5f)) * 100;
             size = new Vector2(10, 10);
             windowSize = new Vector2(graphicsDevice.Viewport.Width, graphicsDevice.Viewport.Height);
         }
@@ -69,7 +72,8 @@ namespace PongServer
         {
             if (!paused)
             {
-                Position += directionVector;
+                timeSinceLastClientSync += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                Position += directionVector * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
                 CheckBorderCollision(new Vector2(windowSize.X, windowSize.Y / 2), new Vector2(2, windowSize.Y), 1);
                 CheckBorderCollision(new Vector2(0, windowSize.Y / 2), new Vector2(2, windowSize.Y), 2);
@@ -78,6 +82,9 @@ namespace PongServer
 
                 foreach (Player player in Player.players)
                     CheckPlayerCollision(player.Position, player.Size);
+
+                if (timeSinceLastClientSync > limitTimeSinceSync)
+                    HandleClient.SendBallDataToAllClients();
             }
         }
 

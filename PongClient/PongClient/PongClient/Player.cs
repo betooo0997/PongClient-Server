@@ -61,12 +61,23 @@ namespace PongClient
 
         public override void Update(GameTime gameTime)
         {
-
         }
+
 
         public override void Draw(GameTime gameTime)
         {
             spriteBatch.Draw(texture, new Rectangle((int)Position.X, (int)Position.Y, 15, 40), Color.White);
+
+            switch (ID)
+            {
+                case 0:
+                    spriteBatch.DrawString(Pong.font1, "Player " + 1 + ":" + Points, new Vector2(Position.X, 15), Color.White);
+                    break;
+
+                case 1:
+                    spriteBatch.DrawString(Pong.font1, "Player " + 2 + ":" + Points, new Vector2(Position.X - 100, 15), Color.White);
+                    break;
+            }
         }
     }
 }

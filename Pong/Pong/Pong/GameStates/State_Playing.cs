@@ -34,8 +34,12 @@ namespace PongServer
             else
             {
                 KeyboardState keyState = Keyboard.GetState();
+
                 if (keyState.IsKeyDown(Keys.Space))
+                {
                     startedGame = true;
+                    HandleClient.SendBallDataToAllClients();
+                }
             }
 
             base.Update(gameTime);

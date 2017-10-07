@@ -10,11 +10,11 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
-namespace PongServer
+namespace Pong
 {
     public class Ball : Entity
     {
-        public static Vector2 directionVector { get; protected set; }
+        public static Vector2 directionVector;
         Vector2 size;
 
         GraphicsDevice graphicsDevice;
@@ -26,7 +26,7 @@ namespace PongServer
         public static float limitTimeSinceSync = 1.5f;
         public static float timeSinceLastClientSync = 0;
 
-        public static Vector2 Position { get; protected set; }
+        public static Vector2 Position;
 
 
         public Ball(GraphicsDevice graphicsDevice)
@@ -84,7 +84,7 @@ namespace PongServer
                     CheckPlayerCollision(player.Position, player.Size);
 
                 if (timeSinceLastClientSync > limitTimeSinceSync)
-                    HandleClient.SendBallDataToAllClients();
+                    ConnectionHandler.SendBallDataToAllClients();
             }
         }
 
@@ -115,7 +115,7 @@ namespace PongServer
                     objectPosition.Y + objectSize.Y > Position.Y && objectPosition.Y < Position.Y + size.Y)
                 {
                     Collision(Axis.X);
-                    HandleClient.SendBallDataToAllClients();
+                    ConnectionHandler.SendBallDataToAllClients();
 
                 }
             }

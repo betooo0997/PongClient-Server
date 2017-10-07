@@ -76,19 +76,24 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Ball.cs" />
+    <Compile Include="Connection\DataHandling\Response\ResponseInClient.cs" />
+    <Compile Include="Connection\DataHandling\Response\ResponseInServer.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="GameStates\GameStates.cs" />
     <Compile Include="GameStates\State_GameOver.cs" />
     <Compile Include="GameStates\State_Menu.cs" />
-    <Compile Include="HandleClient.cs" />
+    <Compile Include="Connection\ConnectionHandler.cs" />
+    <Compile Include="Connection\DataHandling\DataHandler.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Pong.cs" />
     <Compile Include="GameStates\State_Playing.cs" />
-    <Compile Include="Request.cs" />
-    <Compile Include="Response.cs" />
-    <Compile Include="SocketServer.cs" />
+    <Compile Include="Connection\DataHandling\Request\Request.cs" />
+    <Compile Include="Connection\DataHandling\Request\RequestInServer.cs" />
+    <Compile Include="Connection\DataHandling\Request\RequestInClient.cs" />
+    <Compile Include="Connection\DataHandling\Response\Response.cs" />
+    <Compile Include="Connection\PongConnection.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

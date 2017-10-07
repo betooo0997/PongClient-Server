@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
-namespace PongServer
+namespace Pong
 {
     /// <summary>
     /// This is the main type for your game
@@ -22,7 +22,8 @@ namespace PongServer
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        
+        KeyboardState prevKeyState;
+        KeyboardState currKeyState;
 
         State_Menu state_menu;
         State_Playing state_playing;
@@ -36,11 +37,13 @@ namespace PongServer
         Player[] players;
         Ball ball;
 
-        SocketServer server;
+        PongConnection server;
+
+        float timer = 0;
 
         public Pong()
         {
-            server = new SocketServer(11000);
+            server = new PongConnection(11000);
 
             graphics = new GraphicsDeviceManager(this);
 
@@ -100,14 +103,36 @@ namespace PongServer
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            KeyboardState keystate = Keyboard.GetState();
+            timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (keystate.IsKeyDown(Keys.Escape))
+            if (PongConnection.PlayerID != -1)
+            {
+                prevKeyState = currKeyState;
+                currKeyState = Keyboard.GetState();
+
+                if(currKeyState != prevKeyState)
+                {
+                    Keys[] pressedKeys = currKeyState.GetPressedKeys();
+
+                    if (pressedKeys.Length > 0)
+                    {
+                        PongConnection.SendPlayerInputToServer(pressedKeys[0].ToString());
+                        timer = 0;
+                    }
+                }
+                else if (timer > 0.5f)
+                {
+                    PongConnection.SendPlayerInputToServer();
+                    timer = 0;
+                }
+            }
+
+            if (currKeyState.IsKeyDown(Keys.Escape))
                 Exit();
 
             currentState = targetState;
-
             currentState.Update(gameTime);
+
             frameUpdate = true;
 
             base.Update(gameTime);

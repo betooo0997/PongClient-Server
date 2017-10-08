@@ -39,7 +39,10 @@ namespace Pong
             LoadContent();
 
             Random random = new Random();
-            directionVector = Vector2.Normalize(new Vector2((float)random.NextDouble() - 0.5f, (float)random.NextDouble() - 0.5f)) * 100;
+            if (PongConnection.PlayerID == -1)
+                directionVector = Vector2.Normalize(new Vector2((float)random.NextDouble() - 0.5f, (float)random.NextDouble() - 0.5f)) * 100;
+            else
+                directionVector = new Vector2();
             size = new Vector2(10, 10);
             windowSize = new Vector2(graphicsDevice.Viewport.Width, graphicsDevice.Viewport.Height);
         }
@@ -72,7 +75,6 @@ namespace Pong
         {
             if (!paused)
             {
-                timeSinceLastClientSync += (float)gameTime.ElapsedGameTime.TotalSeconds;
                 Position += directionVector * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
                 CheckBorderCollision(new Vector2(windowSize.X, windowSize.Y / 2), new Vector2(2, windowSize.Y), 1);
@@ -83,8 +85,16 @@ namespace Pong
                 foreach (Player player in Player.players)
                     CheckPlayerCollision(player.Position, player.Size);
 
-                if (timeSinceLastClientSync > limitTimeSinceSync)
-                    ConnectionHandler.SendBallDataToAllClients();
+                if (PongConnection.PlayerID == -1)
+                {
+                    timeSinceLastClientSync += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                    if (timeSinceLastClientSync > limitTimeSinceSync)
+                        ConnectionHandler.SendBallDataToAllClients();
+                }
+                else
+                {
+                }
             }
         }
 
@@ -115,8 +125,9 @@ namespace Pong
                     objectPosition.Y + objectSize.Y > Position.Y && objectPosition.Y < Position.Y + size.Y)
                 {
                     Collision(Axis.X);
-                    ConnectionHandler.SendBallDataToAllClients();
 
+                    if(PongConnection.PlayerID == -1)
+                        ConnectionHandler.SendBallDataToAllClients();
                 }
             }
         }

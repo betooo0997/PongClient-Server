@@ -26,7 +26,7 @@ namespace Pong
 
         public override void Update(GameTime gameTime)
         {
-            if (startedGame)
+            if (startedGame || PongConnection.PlayerID != -1)
             {
                 foreach (Entity entity in Entity.NonPlayerEntities)
                     entity.Update(gameTime);

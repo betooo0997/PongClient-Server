@@ -13,18 +13,20 @@ namespace Pong
     {
         public static int PlayerID;
 
+        static string password;
+
         public int port { get; private set; }
 
         public static double[] RegisteredClientIDs;
 
         Thread pongConnectionMain;
 
-        IPEndPoint ipEndPoint;
-        IPAddress ipAddress;
+        static IPEndPoint ipEndPoint;
+        static IPAddress ipAddress;
 
         static Socket socket;
 
-        bool running = false;
+        public static bool running = false;
 
         public static double SocketID;
 
@@ -37,9 +39,7 @@ namespace Pong
         {
             if (!running)
             {
-                pongConnectionMain = new Thread(Initialize);
-                pongConnectionMain.IsBackground = false;
-                pongConnectionMain.Start();
+                Initialize();
             }
         }
 
@@ -50,28 +50,52 @@ namespace Pong
             IPHostEntry ipHostInfo = Dns.Resolve(Dns.GetHostName());
             ipAddress = ipHostInfo.AddressList[0];
             ipEndPoint = new IPEndPoint(ipAddress, port);
-
-            // Create a TCP/IP socket.
-            socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-
-            try
-            {
-                socket.Bind(ipEndPoint);
-                socket.Listen(4);
-
-                PlayerID = -1;
-                ListenToClients();
-            }
-            catch (Exception e)
-            {
-                socket.Connect(ipEndPoint);
-
-                PlayerID = 0;
-                ListenToServer();
-            }
         }
 
-        void ListenToClients()
+        public static bool StartListening(bool server)
+        {
+            // Create a TCP/IP socket.
+            socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            Thread pongConnectionMain;
+
+            if (server)
+            {
+                try
+                {
+                    socket.Bind(ipEndPoint);
+                    socket.Listen(4);
+
+                    PlayerID = -1;
+                    pongConnectionMain = new Thread(ListenToClients);
+                    pongConnectionMain.IsBackground = false;
+                    pongConnectionMain.Start();
+                }
+                catch (Exception e)
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                try
+                {
+                    socket.Connect(ipEndPoint);
+
+                    PlayerID = 0;
+                    pongConnectionMain = new Thread(ListenToServer);
+                    pongConnectionMain.IsBackground = false;
+                    pongConnectionMain.Start();
+                }
+                catch(Exception e)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        static void ListenToClients()
         {
             Console.WriteLine("SERVER");
 
@@ -84,11 +108,21 @@ namespace Pong
                 Console.WriteLine("NEW CLIENT");
 
                 ConnectionHandler newClient = new ConnectionHandler(newSocket);
+
+                if (ConnectionHandler.connections.Length >= 2)
+                {
+                    Ball.paused = false;
+                    running = true;
+                    Console.WriteLine("GAME RUNNING");
+                }
             }
         }
 
-        void ListenToServer()
+        static void ListenToServer()
         {
+            Ball.paused = false;
+            running = true;
+
             Random random = new Random();
             SocketID = random.NextDouble();
 
@@ -98,8 +132,8 @@ namespace Pong
 
         public static void SendPlayerInputToServer(string key = null)
         {
-            //try
-            //{
+            try
+            {
                 string data = "";
 
                 if (PlayerID != 0)
@@ -119,11 +153,19 @@ namespace Pong
                 }
 
                 socket.Send(Encoding.UTF8.GetBytes(data));
-            //}
-            //catch (Exception e)
-            //{
-            //    Console.WriteLine(e.Message);
-            //}
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        public bool CheckPassword(string input)
+        {
+            if (input == password)
+                return true;
+            else
+                return false;
         }
     }
 }

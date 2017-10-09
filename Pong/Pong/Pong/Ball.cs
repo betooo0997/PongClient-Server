@@ -19,7 +19,7 @@ namespace Pong
 
         GraphicsDevice graphicsDevice;
 
-        public static bool paused = false;
+        public static bool paused = true;
 
         Vector2 windowSize;
 
@@ -37,11 +37,15 @@ namespace Pong
             Position = new Vector2(graphicsDevice.Viewport.Width / 2, graphicsDevice.Viewport.Height / 2);
             LoadContent();
 
-            Random random = new Random();
             if (PongConnection.PlayerID == -1)
+            {
+                paused = true;
+                Random random = new Random();
                 directionVector = Vector2.Normalize(new Vector2(150, (float)random.NextDouble() - 0.5f)) * 100;
+            }
             else
                 directionVector = new Vector2();
+
             size = new Vector2(10, 10);
             windowSize = new Vector2(graphicsDevice.Viewport.Width, graphicsDevice.Viewport.Height);
         }

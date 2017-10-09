@@ -30,7 +30,7 @@ namespace Pong
         {
             //try
             //{
-            Console.WriteLine(data);
+            Console.WriteLine("DATA INCOME: " + data);
 
             //string[] commands = data.Split('!');
 

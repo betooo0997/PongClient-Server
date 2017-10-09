@@ -48,6 +48,7 @@ namespace Pong
 
                 case RequestInServer.RequestType.Undefined:
                     bytedata = Encoding.UTF8.GetBytes(Player.GetPositions() + '!');
+                    Console.WriteLine("Bytes gotten");
                     break;
             }
         }

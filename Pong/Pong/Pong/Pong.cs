@@ -22,8 +22,8 @@ namespace Pong
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        KeyboardState prevKeyState;
-        KeyboardState currKeyState;
+        public static KeyboardState prevKeyState { get; private set; }
+        public static KeyboardState currKeyState { get; private set; }
 
         State_Menu state_menu;
         State_Playing state_playing;
@@ -105,11 +105,11 @@ namespace Pong
         {
             timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (PongConnection.PlayerID != -1)
-            {
-                prevKeyState = currKeyState;
-                currKeyState = Keyboard.GetState();
+            prevKeyState = currKeyState;
+            currKeyState = Keyboard.GetState();
 
+            if (PongConnection.PlayerID != -1 && PongConnection.running)
+            {
                 if(currKeyState != prevKeyState)
                 {
                     Keys[] pressedKeys = currKeyState.GetPressedKeys();

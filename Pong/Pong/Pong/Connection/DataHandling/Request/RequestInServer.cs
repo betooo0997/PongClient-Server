@@ -33,28 +33,32 @@ namespace Pong
 
         void GetInformation(string data)
         {
-            Console.WriteLine(data);
+            Console.WriteLine("DATA INCOME: " + data);
 
             int.TryParse(data.First().ToString(), out PlayerID);
 
             if (PlayerID == 0)
             {
-                Type = RequestType.RegisterPlayer;
-                PlayerID = PongConnection.RegisteredClientIDs.Length + 1;
-
-                double[] temp = PongConnection.RegisteredClientIDs;
-                double[] newArray = new double[temp.Length + 1];
-
-                for (int x = 0; x < newArray.Length; x++)
+                try
                 {
-                    if (x < newArray.Length - 1)
-                        newArray[x] = temp[x];
-                    else
-                        newArray[x] = double.Parse(data.Substring(1));
-                }
+                    Type = RequestType.RegisterPlayer;
+                    PlayerID = PongConnection.RegisteredClientIDs.Length + 1;
 
-                PongConnection.RegisteredClientIDs = newArray;
-                ResponseExpected = true;
+                    double[] temp = PongConnection.RegisteredClientIDs;
+                    double[] newArray = new double[temp.Length + 1];
+
+                    for (int x = 0; x < newArray.Length; x++)
+                    {
+                        if (x < newArray.Length - 1)
+                            newArray[x] = temp[x];
+                        else
+                            newArray[x] = double.Parse(data.Substring(1));
+                    }
+
+                    PongConnection.RegisteredClientIDs = newArray;
+                    ResponseExpected = true;
+                }
+                catch { }
                 return;
             }
 
@@ -82,6 +86,8 @@ namespace Pong
 
                 default:
                     Type = RequestType.Undefined;
+                    ResponseExpected = true;
+                    Console.WriteLine("UNDEFINED");
                     break;
             }
         }

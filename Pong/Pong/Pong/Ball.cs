@@ -28,7 +28,6 @@ namespace Pong
 
         public static Vector2 Position;
 
-
         public Ball(GraphicsDevice graphicsDevice)
         {
             AddToArray(this);
@@ -40,7 +39,7 @@ namespace Pong
 
             Random random = new Random();
             if (PongConnection.PlayerID == -1)
-                directionVector = Vector2.Normalize(new Vector2((float)random.NextDouble() - 0.5f, (float)random.NextDouble() - 0.5f)) * 100;
+                directionVector = Vector2.Normalize(new Vector2(150, (float)random.NextDouble() - 0.5f)) * 100;
             else
                 directionVector = new Vector2();
             size = new Vector2(10, 10);
@@ -55,6 +54,7 @@ namespace Pong
         void MakeGoal(Player Winner)
         {
             Winner.IncreasePoints();
+            ConnectionHandler.SendScoreToAllClients();
         }
 
         void Collision(Axis axis)
@@ -83,7 +83,7 @@ namespace Pong
                 CheckBorderCollision(new Vector2(windowSize.X / 2, 0), new Vector2(windowSize.X, 2));
 
                 foreach (Player player in Player.players)
-                    CheckPlayerCollision(player.Position, player.Size);
+                    CheckPlayerCollision(player);
 
                 if (PongConnection.PlayerID == -1)
                 {
@@ -105,7 +105,7 @@ namespace Pong
             {
                 Collision(Axis.X);
 
-                if(PlayerID != null)
+                if(PongConnection.PlayerID == -1 && PlayerID != null)
                     MakeGoal(Player.players[(int)PlayerID - 1]);
             }
 
@@ -116,15 +116,22 @@ namespace Pong
             }
         }
 
-        void CheckPlayerCollision(Vector2 objectPosition, Vector2 objectSize)
+        void CheckPlayerCollision(Player player)
         {
-            if (Position.X + size.X > objectPosition.X && Position.X < objectPosition.X + objectSize.X ||
-                objectPosition.X + objectSize.X > Position.X && objectPosition.X < Position.X + size.X)
+            if (Position.X + size.X > player.Position.X && Position.X < player.Position.X + player.Size.X ||
+                player.Position.X + player.Size.X > Position.X && player.Position.X < Position.X + size.X)
             {
-                if (Position.Y + size.Y > objectPosition.Y && Position.Y < objectPosition.Y + objectSize.Y ||
-                    objectPosition.Y + objectSize.Y > Position.Y && objectPosition.Y < Position.Y + size.Y)
+                if (Position.Y + size.Y > player.Position.Y && Position.Y < player.Position.Y + player.Size.Y ||
+                    player.Position.Y + player.Size.Y > Position.Y && player.Position.Y < Position.Y + size.Y)
                 {
                     Collision(Axis.X);
+
+                    int x = 1;
+
+                    if (directionVector.X < 0)
+                        x = -1;
+
+                    directionVector = player.UpdateDirectionVector(Position, x);
 
                     if(PongConnection.PlayerID == -1)
                         ConnectionHandler.SendBallDataToAllClients();

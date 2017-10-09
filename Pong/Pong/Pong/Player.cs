@@ -15,7 +15,7 @@ namespace Pong
     public class Player : Entity
     {
         public static Player[] players;
-        public int Points { get; private set; }
+        public int Score;
 
         public Vector2 Position;
 
@@ -27,9 +27,9 @@ namespace Pong
         {
             AddToArray();
 
-            Points = 0;
+            Score = 0;
             Position = new Vector2(PositionX, 50);
-            Size = new Vector2(15, 40);
+            Size = new Vector2(15, 50);
 
             LoadContent();
         }
@@ -52,7 +52,7 @@ namespace Pong
 
         public void IncreasePoints()
         {
-            Points++;
+            Score++;
         }
 
         void AddToArray()
@@ -76,6 +76,21 @@ namespace Pong
             }
         }
 
+        public Vector2 UpdateDirectionVector(Vector2 ballPosition, int x)
+        {
+            float yDifference = ballPosition.Y + 5 - (Position.Y + Size.Y / 2);
+            int a = 1;
+
+            if (yDifference < 0)
+                a = -1;
+
+            yDifference = (float)(Math.Pow(yDifference * a, 1.5f) * a);
+
+            Console.WriteLine("Player Pos: " + Position.Y + "\nBall Pos: " + ballPosition.Y + "\nYDifference: " + yDifference);
+
+            return new Vector2(125 * x, yDifference);
+        }
+
         public override void Update(GameTime gameTime)
         {
         }
@@ -84,14 +99,15 @@ namespace Pong
         {
             spriteBatch.Draw(texture, new Rectangle((int)Position.X, (int)Position.Y, (int)Size.X, (int)Size.Y), Color.White);
 
+
             switch (ID)
             {
                 case 0:
-                    spriteBatch.DrawString(Pong.font1, "Player " + 1 + ":" + Points, new Vector2(Position.X, 15), Color.White);
+                    spriteBatch.DrawString(Pong.font1, "Player " + 1 + ":" + Score, new Vector2(Position.X, 15), Color.White);
                     break;
 
                 case 1:
-                    spriteBatch.DrawString(Pong.font1, "Player " + 2 + ":" + Points, new Vector2(Position.X - 100, 15), Color.White);
+                    spriteBatch.DrawString(Pong.font1, "Player " + 2 + ":" + Score, new Vector2(Position.X - 100, 15), Color.White);
                     break;
             }
         }

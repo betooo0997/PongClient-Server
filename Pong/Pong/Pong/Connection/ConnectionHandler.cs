@@ -74,5 +74,14 @@ namespace Pong
                     connections[x] = newClient;
             }
         }
+
+        public static void SendScoreToAllClients()
+        {
+            foreach (ConnectionHandler client in connections)
+            {
+                byte[] bytes = Encoding.UTF8.GetBytes("S" + Player.players[0].Score + " " + Player.players[1].Score);
+                client.socket.Send(bytes);
+            }
+        }
     }
 }

@@ -63,6 +63,12 @@ namespace Pong
                         PongConnection.PlayerID = int.Parse(data.Substring(1));
                     return;
 
+                case 'S':
+                    tokens[0] = tokens[0].Replace("S", "");
+                    Player.players[0].Score = int.Parse(tokens[0]);
+                    Player.players[1].Score = int.Parse(tokens[1]);
+                    break;
+
                 default:
                     tokens = data.Split(' ');
 

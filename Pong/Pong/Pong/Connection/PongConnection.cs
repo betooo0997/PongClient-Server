@@ -15,8 +15,6 @@ namespace Pong
 
         public int port { get; private set; }
 
-        public static int runningConnections = 0;
-
         public static double[] RegisteredClientIDs;
 
         Thread pongConnectionMain;
@@ -27,8 +25,8 @@ namespace Pong
         static Socket socket;
 
         bool running = false;
-        public static double SocketID;
 
+        public static double SocketID;
 
         public PongConnection(int port)
         {

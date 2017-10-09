@@ -7,6 +7,8 @@ namespace Pong
 {
     public class ResponseInServer : Response
     {
+        public bool sendToAllClients = false;
+
         public ResponseInServer(RequestInServer request, DataHandler dataHandler)
         {
             if (request.ResponseExpected)
@@ -24,11 +26,13 @@ namespace Pong
                 case RequestInServer.RequestType.MoveUp:
                     Player.players[request.PlayerID - 1].Move(-1);
                     bytedata = Encoding.UTF8.GetBytes(Player.GetPositions() + '!');
+                    sendToAllClients = true;
                     break;
 
                 case RequestInServer.RequestType.MoveDown:
                     Player.players[request.PlayerID - 1].Move(1);
                     bytedata = Encoding.UTF8.GetBytes(Player.GetPositions() + '!');
+                    sendToAllClients = true;
                     break;
 
                 case RequestInServer.RequestType.Pause:

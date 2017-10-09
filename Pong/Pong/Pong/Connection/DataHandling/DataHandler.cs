@@ -36,17 +36,13 @@ namespace Pong
             RequestInClient request = new RequestInClient(bytes, a);
             ResponseInClient response = new ResponseInClient(request, this);
             response.Post();
-
-            PongConnection.runningConnections--;
         }
 
         void HandleDataInServer()
         {
             RequestInServer request = new RequestInServer(bytes, a);
             ResponseInServer response = new ResponseInServer(request, this);
-            response.Post();
-
-            PongConnection.runningConnections--;
+            response.Post(response.sendToAllClients);
         }
     }
 }

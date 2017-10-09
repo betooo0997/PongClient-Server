@@ -15,11 +15,19 @@ namespace Pong
         protected byte[] bytedata;
         protected DataHandler dataHandler;
 
-        public void Post()
+        public void Post(bool sendToAllClients = false)
         {
             if (bytedata != null)
             {
-                dataHandler.connection.socket.Send(bytedata);
+                if (!sendToAllClients)
+                {
+                    dataHandler.connection.socket.Send(bytedata);
+                }
+                else
+                {
+                    foreach(ConnectionHandler connection in ConnectionHandler.connections)
+                        connection.socket.Send(bytedata);
+                }
                 Console.WriteLine("DATA SENT: " + Encoding.UTF8.GetString(bytedata));
             }
         }

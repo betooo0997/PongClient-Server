@@ -54,7 +54,6 @@ namespace Pong
                 }
 
                 PongConnection.RegisteredClientIDs = newArray;
-                //Console.WriteLine(newArray[newArray.Length - 1]);
                 ResponseExpected = true;
                 return;
             }

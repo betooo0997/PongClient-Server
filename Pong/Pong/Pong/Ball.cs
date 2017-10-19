@@ -19,8 +19,6 @@ namespace Pong
 
         GraphicsDevice graphicsDevice;
 
-        public static bool paused = true;
-
         Vector2 windowSize;
 
         public static float limitTimeSinceSync = 1.5f;
@@ -39,9 +37,8 @@ namespace Pong
 
             if (PongConnection.PlayerID == -1)
             {
-                paused = true;
                 Random random = new Random();
-                directionVector = Vector2.Normalize(new Vector2(150, (float)random.NextDouble() - 0.5f)) * 100;
+                directionVector = Vector2.Normalize(new Vector2(150, (float)random.NextDouble() - 0.5f)) * 250;
             }
             else
                 directionVector = new Vector2();
@@ -77,7 +74,7 @@ namespace Pong
 
         public override void Update(GameTime gameTime)
         {
-            if (!paused)
+            if (PongConnection.running)
             {
                 Position += directionVector * (float)gameTime.ElapsedGameTime.TotalSeconds;
 

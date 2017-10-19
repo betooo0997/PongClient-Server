@@ -7,10 +7,19 @@ namespace Pong
 {
     public class RequestInServer : Request
     {
+        /// <summary>
+        /// The PlayerID of the incoming Request.
+        /// </summary>
         public int PlayerID;
 
+        /// <summary>
+        /// The type of the Request.
+        /// </summary>
         public RequestType Type { get; private set; }
 
+        /// <summary>
+        /// The enum which describes which type the request is about.
+        /// </summary>
         public enum RequestType
         {
             MoveUp,
@@ -21,6 +30,9 @@ namespace Pong
             Undefined
         }
 
+        /// <summary>
+        /// The class constructor.
+        /// </summary>
         public RequestInServer(byte[] bytes, int a)
         {
             PlayerID = 0;
@@ -31,8 +43,15 @@ namespace Pong
             GetInformation(data);
         }
 
+        /// <summary>
+        /// Analyzes the incoming data.
+        /// </summary>
+        /// <param name="data"></param>
         void GetInformation(string data)
         {
+            if (data.Length < 1)
+                return;
+
             Console.WriteLine("DATA INCOME: " + data);
 
             int.TryParse(data.First().ToString(), out PlayerID);

@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Pong
 {
-    class State_Menu : GameState
+    public class State_Menu : GameState
     {
         public static State_Menu Singleton { get; private set; }
 
@@ -20,6 +20,8 @@ namespace Pong
 
         Color serverText = Color.Red;
         Color clientText = Color.White;
+
+        public string info = "";
 
         public State_Menu()
         {
@@ -70,7 +72,10 @@ namespace Pong
                     }
 
                     if (success)
+                    {
                         targetState = State_Playing.Singleton;
+                        info = "";
+                    }
                 }
             }
 
@@ -79,10 +84,12 @@ namespace Pong
 
         public override void Draw(GameTime gameTime)
         {
-            spriteBatch.DrawString(Pong.font1, "STATE: MENU", new Vector2(200, 5), Color.White);
+            spriteBatch.DrawString(Pong.font1, "MENU", new Vector2(200, 5), Color.White);
 
             spriteBatch.DrawString(Pong.font1, "Connect as server", new Vector2(200, 45), serverText);
             spriteBatch.DrawString(Pong.font1, "Connect as client", new Vector2(200, 75), clientText);
+
+            spriteBatch.DrawString(Pong.font1, info, new Vector2(200, 150), Color.White);
         }
     }
 }

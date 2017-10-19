@@ -7,8 +7,14 @@ namespace Pong
 {
     public class ResponseInServer : Response
     {
+        /// <summary>
+        /// True if the Response should be sent to all clients.
+        /// </summary>
         public bool sendToAllClients = false;
 
+        /// <summary>
+        /// The class constructor.
+        /// </summary>
         public ResponseInServer(RequestInServer request, DataHandler dataHandler)
         {
             if (request.ResponseExpected)
@@ -19,6 +25,9 @@ namespace Pong
             }
         }
 
+        /// <summary>
+        /// Creates a response based on the analyzed data by the Request instance.
+        /// </summary>
         void ProcessData(RequestInServer request)
         {
             switch (request.Type)

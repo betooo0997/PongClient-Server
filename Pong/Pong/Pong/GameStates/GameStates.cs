@@ -22,7 +22,7 @@ namespace Pong
     public abstract class GameState
     {
         protected static SpriteBatch spriteBatch;
-        protected GameState targetState;
+        public GameState targetState;
 
         protected void Start()
         {

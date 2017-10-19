@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Pong
 {
-    class State_GameOver : GameState
+    public class State_GameOver : GameState
     {
         public static State_GameOver Singleton { get; private set; }
 

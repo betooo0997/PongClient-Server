@@ -15,20 +15,31 @@ namespace Pong
         protected byte[] bytedata;
         protected DataHandler dataHandler;
 
+        /// <summary>
+        /// Sends the data to the client/s.
+        /// </summary>
+        /// <param name="sendToAllClients">If the data should be sent to all clients.</param>
         public void Post(bool sendToAllClients = false)
         {
-            if (bytedata != null)
+            try
             {
-                if (!sendToAllClients)
+                if (bytedata != null)
                 {
-                    dataHandler.connection.socket.Send(bytedata);
+                    if (!sendToAllClients)
+                    {
+                        dataHandler.connection.socket.Send(bytedata);
+                    }
+                    else
+                    {
+                        foreach (ConnectionHandler connection in ConnectionHandler.connections)
+                            connection.socket.Send(bytedata);
+                    }
+                    Console.WriteLine("DATA SENT: " + Encoding.UTF8.GetString(bytedata));
                 }
-                else
-                {
-                    foreach(ConnectionHandler connection in ConnectionHandler.connections)
-                        connection.socket.Send(bytedata);
-                }
-                Console.WriteLine("DATA SENT: " + Encoding.UTF8.GetString(bytedata));
+            }
+            catch
+            {
+                ConnectionHandler.Error();
             }
         }
     }

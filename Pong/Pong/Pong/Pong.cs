@@ -34,16 +34,19 @@ namespace Pong
 
         public static SpriteFont font1;
 
-        Player[] players;
-        Ball ball;
+        static Player[] players;
+        static Ball ball;
+
+        public static Pong Singleton;
 
         PongConnection server;
-
-        float timer = 0;
 
         public Pong()
         {
             server = new PongConnection(11000);
+            server.Start();
+
+            Singleton = this;
 
             graphics = new GraphicsDeviceManager(this);
 
@@ -65,8 +68,16 @@ namespace Pong
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            server.Start();
             base.Initialize();
+        }
+
+        public static void InitializeGame()
+        {
+            players = new Player[2];
+            players[0] = new Player(10);
+            players[1] = new Player(Singleton.GraphicsDevice.Viewport.Width - 25);
+            ball = new Ball(Singleton.GraphicsDevice);
+            ConnectionHandler.SendBallDataToAllClients();
         }
 
         /// <summary>
@@ -80,11 +91,6 @@ namespace Pong
             GameState.SetSpriteBatch(spriteBatch);
 
             font1 = Content.Load<SpriteFont>("Font1");
-
-            players = new Player[2];
-            players[0] = new Player(10);
-            players[1] = new Player(GraphicsDevice.Viewport.Width - 25);
-            ball = new Ball(GraphicsDevice);
         }
 
         /// <summary>
@@ -103,8 +109,6 @@ namespace Pong
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-
             prevKeyState = currKeyState;
             currKeyState = Keyboard.GetState();
 
@@ -115,20 +119,20 @@ namespace Pong
                     Keys[] pressedKeys = currKeyState.GetPressedKeys();
 
                     if (pressedKeys.Length > 0)
-                    {
-                        PongConnection.SendPlayerInputToServer(pressedKeys[0].ToString());
-                        timer = 0;
-                    }
-                }
-                else if (timer > 0.5f)
-                {
-                    PongConnection.SendPlayerInputToServer();
-                    timer = 0;
+                        PongConnection.SyncPlayerPositions(pressedKeys[0].ToString());
                 }
             }
 
             if (currKeyState.IsKeyDown(Keys.Escape))
-                Exit();
+            {
+                if (currKeyState != prevKeyState)
+                {
+                    if (!PongConnection.running)
+                        Exit();
+                    else
+                        PongConnection.CloseConnection();
+                }
+            }
 
             currentState = targetState;
             currentState.Update(gameTime);

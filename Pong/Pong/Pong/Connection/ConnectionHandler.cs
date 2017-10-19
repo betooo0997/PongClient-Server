@@ -24,15 +24,22 @@ namespace Pong
 
         void HandleConnectionData()
         {
-            while (true)
+            try
             {
-                if (socket.Connected)
+                while (true)
                 {
-                    byte[] bytes = new byte[1024];
-                    int a = socket.Receive(bytes);
+                    if (socket.Connected)
+                    {
+                        byte[] bytes = new byte[1024];
+                        int a = socket.Receive(bytes);
 
-                    DataHandler dataHandler = new DataHandler(this, bytes, a);
+                        DataHandler dataHandler = new DataHandler(this, bytes, a);
+                    }
                 }
+            }
+            catch(SocketException e)
+            {
+                Error();
             }
         }
 
@@ -45,16 +52,23 @@ namespace Pong
 
         public static void SendBallDataToAllClients()
         {
-            if (connections != null && Ball.timeSinceLastClientSync > Ball.limitTimeSinceSync / 2)
+            try
             {
-                foreach (ConnectionHandler client in connections)
+                if (connections != null && Ball.timeSinceLastClientSync > Ball.limitTimeSinceSync / 2)
                 {
-                    Thread sendBallData = new Thread(client.SendBallDataToClient);
-                    sendBallData.Start();
-                }
+                    foreach (ConnectionHandler client in connections)
+                    {
+                        Thread sendBallData = new Thread(client.SendBallDataToClient);
+                        sendBallData.Start();
+                    }
 
-                Console.Write("Ball data sent to all clients.");
-                Ball.timeSinceLastClientSync = 0;
+                    Console.Write("Ball data sent to all clients.");
+                    Ball.timeSinceLastClientSync = 0;
+                }
+            }
+            catch
+            {
+                Error();
             }
         }
 
@@ -77,11 +91,27 @@ namespace Pong
 
         public static void SendScoreToAllClients()
         {
-            foreach (ConnectionHandler client in connections)
+            try
             {
-                byte[] bytes = Encoding.UTF8.GetBytes("S" + Player.players[0].Score + " " + Player.players[1].Score);
-                client.socket.Send(bytes);
+                foreach (ConnectionHandler client in connections)
+                {
+                    byte[] bytes = Encoding.UTF8.GetBytes("S" + Player.players[0].Score + " " + Player.players[1].Score);
+                    client.socket.Send(bytes);
+                }
             }
+            catch
+            {
+                Error();
+            }
+        }
+
+        public static void Error()
+        {
+            State_Menu.Singleton.targetState = State_Menu.Singleton;
+            Pong.targetState = State_Menu.Singleton;
+            State_Menu.Singleton.info = "A client has logged out or a connection error \nocurred, you have been disconnected.";
+
+            PongConnection.CloseConnection();
         }
     }
 }

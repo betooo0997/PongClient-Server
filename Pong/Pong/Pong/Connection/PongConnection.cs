@@ -118,6 +118,7 @@ namespace Pong
                 }
                 catch (Exception e)
                 {
+                    Console.WriteLine(e.Message);
                     return false;
                 }
             }
@@ -132,6 +133,8 @@ namespace Pong
                     pongConnectionMain.IsBackground = false;
                     pongConnectionMain.Start();
 
+                    Thread.Sleep(10);
+
                     Console.WriteLine("Sending first message");
                     socket.Send(Encoding.UTF8.GetBytes("?" + State_Menu.Singleton.input));
 
@@ -139,6 +142,7 @@ namespace Pong
                 }
                 catch (Exception e)
                 {
+                    Console.WriteLine(e.Message);
                     return false;
                 }
             }
@@ -161,7 +165,6 @@ namespace Pong
 
                 while (!newClient.initalized)
                     Thread.Sleep(1);
-
 
                 if (ConnectionHandler.connections != null)
                 {

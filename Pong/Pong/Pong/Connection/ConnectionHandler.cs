@@ -26,8 +26,8 @@ namespace Pong
 
         void HandleConnectionData()
         {
-            //try
-            //{
+            try
+            {
                 while (true)
                 {
                     if (socket.Connected)
@@ -71,13 +71,13 @@ namespace Pong
                         }
                     }
                 }
-            //}
-            //catch(SocketException e)
-            //{
-            //    //Error();
-            //    Console.WriteLine(e.Message);
-            //}
-        }
+            }
+            catch (SocketException e)
+            {
+                Error();
+                Console.WriteLine(e.Message);
+            }
+}
 
         void SendBallDataToClient()
         {
@@ -104,7 +104,7 @@ namespace Pong
             }
             catch(Exception e)
             {
-                //Error();
+                Error();
                 Console.WriteLine(e.Message);
             }
         }
@@ -138,7 +138,7 @@ namespace Pong
             }
             catch (Exception e)
             {
-                //Error();
+                Error();
                 Console.WriteLine(e.Message);
             }
         }

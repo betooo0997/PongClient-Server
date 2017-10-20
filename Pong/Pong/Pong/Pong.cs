@@ -73,11 +73,15 @@ namespace Pong
 
         public static void InitializeGame()
         {
-            players = new Player[2];
-            players[0] = new Player(10);
-            players[1] = new Player(Singleton.GraphicsDevice.Viewport.Width - 25);
-            ball = new Ball(Singleton.GraphicsDevice);
-            ConnectionHandler.SendBallDataToAllClients();
+            if (players == null)
+            {
+                players = new Player[2];
+                players[0] = new Player(10);
+                players[1] = new Player(Singleton.GraphicsDevice.Viewport.Width - 25);
+                ball = new Ball(Singleton.GraphicsDevice);
+                ConnectionHandler.SendBallDataToAllClients();
+                ConnectionHandler.SendBallDataToAllClients();
+            }
         }
 
         /// <summary>

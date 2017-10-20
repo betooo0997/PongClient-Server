@@ -13,10 +13,12 @@ namespace Pong
 
         public Socket socket;
 
+        public bool initalized = false;
+        public bool correctPassword = false;
+
         public ConnectionHandler(Socket socket)
         {
             this.socket = socket;
-            AddToArray(this);
 
             Thread dataHandling = new Thread(HandleConnectionData);
             dataHandling.Start();
@@ -24,23 +26,57 @@ namespace Pong
 
         void HandleConnectionData()
         {
-            try
-            {
+            //try
+            //{
                 while (true)
                 {
                     if (socket.Connected)
                     {
                         byte[] bytes = new byte[1024];
                         int a = socket.Receive(bytes);
+                        string data = Encoding.UTF8.GetString(bytes, 0, a);
 
-                        DataHandler dataHandler = new DataHandler(this, bytes, a);
+                        if (data == "CLOSE" || data == "ACCEPTED" || data.First() == '?')
+                        {
+                            Console.WriteLine("First Income, checking password: " + data);
+
+                            DataHandler dataHandler = new DataHandler(this, data);
+
+                            Console.WriteLine("GOING TO SLEEP");
+
+                            while (!initalized)
+                                Thread.Sleep(1);
+
+                            Console.WriteLine("WAKING UP");
+
+                            if (correctPassword)
+                                break;
+                            else
+                                return;
+                        }
                     }
                 }
-            }
-            catch(SocketException e)
-            {
-                Error();
-            }
+
+                while (true)
+                {
+                    if (socket.Connected)
+                    {
+                        byte[] bytes = new byte[1024];
+                        int a = socket.Receive(bytes);
+                        string data = Encoding.UTF8.GetString(bytes, 0, a);
+
+                        if (data != "")
+                        {
+                            DataHandler dataHandler = new DataHandler(this, data);
+                        }
+                    }
+                }
+            //}
+            //catch(SocketException e)
+            //{
+            //    //Error();
+            //    Console.WriteLine(e.Message);
+            //}
         }
 
         void SendBallDataToClient()
@@ -66,13 +102,14 @@ namespace Pong
                     Ball.timeSinceLastClientSync = 0;
                 }
             }
-            catch
+            catch(Exception e)
             {
-                Error();
+                //Error();
+                Console.WriteLine(e.Message);
             }
         }
 
-        static void AddToArray(ConnectionHandler newClient)
+        public void AddToArray()
         {
             if (connections == null)
                 connections = new ConnectionHandler[0];
@@ -85,7 +122,7 @@ namespace Pong
                 if (x < connections.Length - 1)
                     connections[x] = temp[x];
                 else
-                    connections[x] = newClient;
+                    connections[x] = this;
             }
         }
 
@@ -99,15 +136,17 @@ namespace Pong
                     client.socket.Send(bytes);
                 }
             }
-            catch
+            catch (Exception e)
             {
-                Error();
+                //Error();
+                Console.WriteLine(e.Message);
             }
         }
 
         public static void Error()
         {
             State_Menu.Singleton.targetState = State_Menu.Singleton;
+            Console.WriteLine("ERROR, Targetstate is Menu");
             Pong.targetState = State_Menu.Singleton;
             State_Menu.Singleton.info = "A client has logged out or a connection error \nocurred, you have been disconnected.";
 

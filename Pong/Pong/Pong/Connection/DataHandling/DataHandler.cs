@@ -11,14 +11,12 @@ namespace Pong
     {
         string data;
         public ConnectionHandler connection { get; private set; }
-        byte[] bytes;
-        int a;
 
-        public DataHandler(ConnectionHandler connection, byte[] bytes, int a)
+
+        public DataHandler(ConnectionHandler connection, string data)
         {
             this.connection = connection;
-            this.bytes = bytes;
-            this.a = a;
+            this.data = data;
 
             Thread handleData;
 
@@ -33,14 +31,14 @@ namespace Pong
 
         void HandleDataInClient()
         {
-            RequestInClient request = new RequestInClient(bytes, a);
+            RequestInClient request = new RequestInClient(data, this);
             ResponseInClient response = new ResponseInClient(request, this);
             response.Post();
         }
 
         void HandleDataInServer()
         {
-            RequestInServer request = new RequestInServer(bytes, a);
+            RequestInServer request = new RequestInServer(data, this);
             ResponseInServer response = new ResponseInServer(request, this);
             response.Post(response.sendToAllClients);
         }

@@ -27,7 +27,7 @@ namespace Pong
         /// <summary>
         /// The servers password to join the seesion.
         /// </summary>
-        static string password;
+        public static string password { get; private set; }
 
         /// <summary>
         /// The server's port.
@@ -96,7 +96,7 @@ namespace Pong
         /// </summary>
         /// <param name="server">If the instance shall act as server or not.</param>
         /// <returns></returns>
-        public static bool StartListening(bool server)
+        public static bool StartListening(bool server, string password)
         {
             // Create a TCP/IP socket.
             socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -114,6 +114,7 @@ namespace Pong
                     pongConnectionMain.IsBackground = false;
                     pongConnectionMain.Start();
                     Pong.InitializeGame();
+                    PongConnection.password = password;
                 }
                 catch (Exception e)
                 {
@@ -130,6 +131,10 @@ namespace Pong
                     pongConnectionMain = new Thread(ListenToServer);
                     pongConnectionMain.IsBackground = false;
                     pongConnectionMain.Start();
+
+                    Console.WriteLine("Sending first message");
+                    socket.Send(Encoding.UTF8.GetBytes("?" + State_Menu.Singleton.input));
+
                     Pong.InitializeGame();
                 }
                 catch (Exception e)
@@ -152,13 +157,21 @@ namespace Pong
             {
                 Socket newSocket = socket.Accept();
 
-                Console.WriteLine("NEW CLIENT");
-
                 ConnectionHandler newClient = new ConnectionHandler(newSocket);
 
-                if (ConnectionHandler.connections.Length >= 2)
+                while (!newClient.initalized)
+                    Thread.Sleep(1);
+
+
+                if (ConnectionHandler.connections != null)
                 {
-                    running = true;
+                    Console.WriteLine("Connections: " + ConnectionHandler.connections.Length);
+
+                    if (ConnectionHandler.connections.Length > 1)
+                    {
+                        running = true;
+                        ConnectionHandler.SendBallDataToAllClients();
+                    }
                 }
             }
         }
@@ -183,42 +196,23 @@ namespace Pong
         /// <param name="key"></param>
         public static void SyncPlayerPositions(string key)
         {
-            try
+            Console.WriteLine("KEY PRESSED, SENDING");
+
+            string data = "";
+
+            if (PlayerID != 0)
             {
-                string data = "";
+                data = PlayerID + key;
+            }
 
-                if (PlayerID != 0)
-                {
-                    if (key != null)
-                    {
-                        data = PlayerID + key;
-                    }
-                    else
-                    {
-                        data = PlayerID.ToString();
-                    }
-                }
-                else
-                {
-                    data = "?" + SocketID;
-                }
-
+            if(data != "")
                 socket.Send(Encoding.UTF8.GetBytes(data));
-            }
-            catch (SocketException e)
-            {
-                ConnectionHandler.Error();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
         }
 
         /// <summary>
         /// Looks if the given string is equivalent to the servers password.
         /// </summary>
-        public bool CheckPassword(string input)
+        public static bool CheckPassword(string input)
         {
             if (input == password)
                 return true;
@@ -228,15 +222,18 @@ namespace Pong
 
         public static void CloseConnection()
         {
-            foreach(ConnectionHandler connection in ConnectionHandler.connections)
+            if (ConnectionHandler.connections != null)
             {
-                try
+                foreach (ConnectionHandler connection in ConnectionHandler.connections)
                 {
-                    connection.socket.Shutdown(SocketShutdown.Both);
-                    connection.socket.Close();
-                }
-                catch
-                {
+                    try
+                    {
+                        connection.socket.Shutdown(SocketShutdown.Both);
+                        connection.socket.Close();
+                    }
+                    catch
+                    {
+                    }
                 }
             }
 

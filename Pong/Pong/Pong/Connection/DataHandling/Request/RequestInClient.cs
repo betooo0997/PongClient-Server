@@ -10,6 +10,8 @@ namespace Pong
     {
         public RequestType Type { get; private set; }
 
+        DataHandler datahandler;
+
         public enum RequestType
         {
             SendingBallPosition,
@@ -17,34 +19,41 @@ namespace Pong
             Undefined
         }
 
-        public RequestInClient(byte[] bytes, int a)
+        public RequestInClient(string data, DataHandler datahandler)
         {
-            this.bytes = bytes;
-            this.a = a;
-
-            string data = Encoding.UTF8.GetString(bytes, 0, a);
+            this.datahandler = datahandler;
             GetInformation(data);
         }
 
         void GetInformation(string data)
         {
-            //try
-            //{
+            if (data == "CLOSE")
+            {
+                Console.WriteLine("Inputted password is wrong! " + data);
+                ConnectionHandler.Error();
+                State_Menu.Singleton.info = "Wrong password";
+
+                datahandler.connection.correctPassword = false;
+                datahandler.connection.initalized = true;
+                return;
+            }
+            else if (data == "ACCEPTED")
+            {
+                Console.WriteLine("Inputted password is correct! " + data);
+                datahandler.connection.AddToArray();
+                datahandler.connection.correctPassword = true;
+                datahandler.connection.initalized = true;
+                State_Menu.Singleton.targetState = State_Playing.Singleton;
+                return;
+            }
+
             Console.WriteLine("DATA INCOME: " + data);
 
-            //string[] commands = data.Split('!');
-
-            //if (commands.Length > 2)
-            //{
-            //    Console.WriteLine("ERROR; COMMANDS HAVE BEEN MERGED:");
-            //    int comnum = 1;
-            //    foreach (string command in commands)
-            //    {
-            //        Console.WriteLine(comnum + ": " + command);
-            //        comnum++;
-            //    }
-            //    return;
-            //}
+            if (data.Split('!').Length > 2)
+            {
+                Console.WriteLine("Too long, aborting: " + data);
+                return;
+            }
 
             data = data.Replace("!", "");
             string[] tokens = data.Split(' ');

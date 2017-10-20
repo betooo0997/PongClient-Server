@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace Pong
 {
@@ -11,6 +12,8 @@ namespace Pong
         /// The PlayerID of the incoming Request.
         /// </summary>
         public int PlayerID;
+
+        DataHandler datahandler;
 
         /// <summary>
         /// The type of the Request.
@@ -33,13 +36,11 @@ namespace Pong
         /// <summary>
         /// The class constructor.
         /// </summary>
-        public RequestInServer(byte[] bytes, int a)
+        public RequestInServer(string data, DataHandler datahandler)
         {
             PlayerID = 0;
-            this.bytes = bytes;
-            this.a = a;
+            this.datahandler = datahandler;
 
-            string data = Encoding.UTF8.GetString(bytes, 0, a);
             GetInformation(data);
         }
 
@@ -58,8 +59,24 @@ namespace Pong
 
             if (PlayerID == 0)
             {
-                try
+                //try
+                //{
+                if (!PongConnection.CheckPassword(data.Replace("?", "")))
                 {
+                    Console.WriteLine("Inputted password is wrong! " + data);
+                    datahandler.connection.socket.Send(Encoding.UTF8.GetBytes("CLOSE"));
+                    datahandler.connection.socket.Shutdown(System.Net.Sockets.SocketShutdown.Both);
+                    datahandler.connection.socket.Close();
+                    datahandler.connection.correctPassword = false;
+                    datahandler.connection.initalized = true;
+                }
+                else
+                {
+                    datahandler.connection.AddToArray();
+                    datahandler.connection.correctPassword = true;
+                    datahandler.connection.socket.Send(Encoding.UTF8.GetBytes("ACCEPTED"));
+                    ResponseExpected = true;
+
                     Type = RequestType.RegisterPlayer;
                     PlayerID = PongConnection.RegisteredClientIDs.Length + 1;
 
@@ -71,13 +88,13 @@ namespace Pong
                         if (x < newArray.Length - 1)
                             newArray[x] = temp[x];
                         else
-                            newArray[x] = double.Parse(data.Substring(1));
+                            newArray[x] = newArray.Length;
                     }
 
                     PongConnection.RegisteredClientIDs = newArray;
-                    ResponseExpected = true;
+                    datahandler.connection.initalized = true;
                 }
-                catch { }
+
                 return;
             }
 

@@ -14,6 +14,7 @@ namespace Pong
 {
     public class Ball : Entity
     {
+        public static Vector2 Position;
         public static Vector2 directionVector;
         Vector2 size;
 
@@ -21,10 +22,9 @@ namespace Pong
 
         Vector2 windowSize;
 
-        public static float limitTimeSinceSync = 1.5f;
-        public static float timeSinceLastClientSync = 0;
+        public static float ballSyncIntervall = 1.5f;
+        public static float timeSinceBallSync = 0;
 
-        public static Vector2 Position;
 
         public Ball(GraphicsDevice graphicsDevice)
         {
@@ -38,7 +38,7 @@ namespace Pong
             if (PongConnection.PlayerID == -1)
             {
                 Random random = new Random();
-                directionVector = Vector2.Normalize(new Vector2(150, (float)random.NextDouble() - 0.5f)) * 250;
+                directionVector = Vector2.Normalize(new Vector2(50, (float)random.NextDouble() - 0.5f)) * 250;
             }
             else
                 directionVector = new Vector2();
@@ -88,13 +88,10 @@ namespace Pong
 
                 if (PongConnection.PlayerID == -1)
                 {
-                    timeSinceLastClientSync += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    timeSinceBallSync += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-                    if (timeSinceLastClientSync > limitTimeSinceSync)
+                    if (timeSinceBallSync > ballSyncIntervall)
                         ConnectionHandler.SendBallDataToAllClients();
-                }
-                else
-                {
                 }
             }
         }

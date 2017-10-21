@@ -99,7 +99,6 @@ namespace Pong
         {
             spriteBatch.Draw(texture, new Rectangle((int)Position.X, (int)Position.Y, (int)Size.X, (int)Size.Y), Color.White);
 
-
             switch (ID)
             {
                 case 0:

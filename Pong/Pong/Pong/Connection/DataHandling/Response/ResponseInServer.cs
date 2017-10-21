@@ -2,9 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace Pong
 {
+    /// <summary>
+    /// Class that manages the Responses inside the server.
+    /// </summary>
     public class ResponseInServer : Response
     {
         /// <summary>
@@ -51,8 +55,21 @@ namespace Pong
                     break;
 
                 case RequestInServer.RequestType.RegisterPlayer:
-                    bytedata = Encoding.UTF8.GetBytes('?' + request.PlayerID.ToString() + '!');
-                    Console.WriteLine("Bytes gotten");
+
+                    if (dataHandler.connection.correctPassword)
+                    {
+                        dataHandler.connection.socket.Send(Encoding.UTF8.GetBytes("ACCEPTED"));
+                        Thread.Sleep(10);
+                        bytedata = Encoding.UTF8.GetBytes('?' + request.PlayerID.ToString() + '!');
+                    }
+                    else
+                    {
+                        dataHandler.connection.socket.Send(Encoding.UTF8.GetBytes("REJECTED"));
+                        dataHandler.connection.socket.Shutdown(System.Net.Sockets.SocketShutdown.Both);
+                        dataHandler.connection.socket.Close();
+                    }
+
+                        Console.WriteLine("Bytes gotten");
                     break;
 
                 case RequestInServer.RequestType.Undefined:

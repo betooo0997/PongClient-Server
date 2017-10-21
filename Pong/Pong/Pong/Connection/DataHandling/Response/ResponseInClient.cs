@@ -5,13 +5,16 @@ using System.Text;
 
 namespace Pong
 {
+    /// <summary>
+    /// Class that manages the Responses inside a client.
+    /// </summary>
     public class ResponseInClient : Response
     {
         /// <summary>
         /// The class constructor.
         /// </summary>
-        /// <param name="request"></param>
-        /// <param name="dataHandler">The DataHandler instance that created this instance</param>
+        /// <param name="request">The analyzed data.</param>
+        /// <param name="dataHandler">The DataHandler instance that created this instance.</param>
         public ResponseInClient(RequestInClient request, DataHandler dataHandler)
         {
             if (request.ResponseExpected)

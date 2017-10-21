@@ -52,7 +52,7 @@ namespace Pong
 
                 if (keys.Length > 0)
                 {
-                    if (keys[0].Equals(Keys.Back))
+                    if (keys[0].Equals(Keys.Back) && input.Length > 0)
                         input = input.Substring(0, input.Length - 1);
                     else if (keys[0].ToString().Length <= 2)
                         input += keys[0].ToString();

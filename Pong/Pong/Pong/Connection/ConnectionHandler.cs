@@ -7,6 +7,9 @@ using System.Threading;
 
 namespace Pong
 {
+    /// <summary>
+    /// Class that handles a server-client connection.
+    /// </summary>
     public class ConnectionHandler
     {
         /// <summary>
@@ -56,7 +59,7 @@ namespace Pong
                         int a = socket.Receive(bytes);
                         string data = Encoding.UTF8.GetString(bytes, 0, a);
 
-                        if (data == "CLOSE" || data == "ACCEPTED" || data.First() == '?')
+                        if (data == "CLOSE" || data == "ACCEPTED" || data.Length > 0 && data.First() == '?')
                         {
                             Console.WriteLine("First Income, checking password: " + data);
 
@@ -114,9 +117,9 @@ namespace Pong
         /// </summary>
         public static void SendBallDataToAllClients()
         {
-            try
-            {
-                if (connections != null && Ball.timeSinceLastClientSync > Ball.limitTimeSinceSync / 2)
+            //try
+            //{
+                if (connections != null && Ball.timeSinceBallSync > Ball.ballSyncIntervall / 2)
                 {
                     foreach (ConnectionHandler client in connections)
                     {
@@ -125,14 +128,14 @@ namespace Pong
                     }
 
                     Console.Write("Ball data sent to all clients.");
-                    Ball.timeSinceLastClientSync = 0;
+                    Ball.timeSinceBallSync = 0;
                 }
-            }
-            catch (Exception e)
-            {
-                Error();
-                Console.WriteLine(e.Message);
-            }
+            //}
+            //catch (Exception e)
+            //{
+            //    Error();
+            //    Console.WriteLine(e.Message);
+            //}
         }
 
         /// <summary>

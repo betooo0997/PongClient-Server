@@ -7,6 +7,9 @@ using System.Threading;
 
 namespace Pong
 {
+    /// <summary>
+    /// Class that handles the incoming data.
+    /// </summary>
     public class DataHandler
     {
         /// <summary>

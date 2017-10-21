@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using System.Threading;
 
 namespace Pong
 {
@@ -16,8 +17,8 @@ namespace Pong
     /// </summary>
     public class Pong : Microsoft.Xna.Framework.Game
     {
-        public static bool frameUpdate = false;
-
+        public static Pong Singleton;
+        PongConnection server;
 
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -25,21 +26,16 @@ namespace Pong
         public static KeyboardState prevKeyState { get; private set; }
         public static KeyboardState currKeyState { get; private set; }
 
+        static GameState currentState;
+        public static GameState targetState;
+
         State_Menu state_menu;
         State_Playing state_playing;
-        State_GameOver state_gameOver;
-
-        public static GameState targetState;
-        GameState currentState;
-
-        public static SpriteFont font1;
 
         static Player[] players;
         static Ball ball;
 
-        public static Pong Singleton;
-
-        PongConnection server;
+        public static SpriteFont font1;
 
         public Pong()
         {
@@ -54,7 +50,6 @@ namespace Pong
 
             state_menu = new State_Menu();
             state_playing = new State_Playing();
-            state_gameOver = new State_GameOver();
 
             targetState = state_menu;
         }
@@ -71,6 +66,9 @@ namespace Pong
             base.Initialize();
         }
 
+        /// <summary>
+        /// Initializes the game creating new Player instances and the Ball.
+        /// </summary>
         public static void InitializeGame()
         {
             if (players == null)
@@ -79,7 +77,7 @@ namespace Pong
                 players[0] = new Player(10);
                 players[1] = new Player(Singleton.GraphicsDevice.Viewport.Width - 25);
                 ball = new Ball(Singleton.GraphicsDevice);
-                ConnectionHandler.SendBallDataToAllClients();
+                Thread.Sleep(20);
                 ConnectionHandler.SendBallDataToAllClients();
             }
         }
@@ -91,6 +89,7 @@ namespace Pong
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
+
             Entity.SetSpriteBatch(spriteBatch, Content);
             GameState.SetSpriteBatch(spriteBatch);
 
@@ -103,7 +102,6 @@ namespace Pong
         /// </summary>
         protected override void UnloadContent()
         {
-            // TODO: Unload any non ContentManager content here
         }
 
         /// <summary>
@@ -140,8 +138,6 @@ namespace Pong
 
             currentState = targetState;
             currentState.Update(gameTime);
-
-            frameUpdate = true;
 
             base.Update(gameTime);
         }

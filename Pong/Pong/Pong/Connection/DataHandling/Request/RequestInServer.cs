@@ -6,6 +6,9 @@ using System.Threading;
 
 namespace Pong
 {
+    /// <summary>
+    /// Class that manages the Requests inside the server.
+    /// </summary>
     public class RequestInServer : Request
     {
         /// <summary>
@@ -13,7 +16,7 @@ namespace Pong
         /// </summary>
         public int PlayerID;
 
-        DataHandler datahandler;
+        DataHandler dataHandler;
 
         /// <summary>
         /// The type of the Request.
@@ -36,10 +39,10 @@ namespace Pong
         /// <summary>
         /// The class constructor.
         /// </summary>
-        public RequestInServer(string data, DataHandler datahandler)
+        public RequestInServer(string data, DataHandler dataHandler)
         {
             PlayerID = 0;
-            this.datahandler = datahandler;
+            this.dataHandler = dataHandler;
 
             GetInformation(data);
         }
@@ -59,25 +62,19 @@ namespace Pong
 
             if (PlayerID == 0)
             {
-                //try
-                //{
+                Type = RequestType.RegisterPlayer;
+                ResponseExpected = true;
+
                 if (!PongConnection.CheckPassword(data.Replace("?", "")))
                 {
                     Console.WriteLine("Inputted password is wrong! " + data);
-                    datahandler.connection.socket.Send(Encoding.UTF8.GetBytes("CLOSE"));
-                    datahandler.connection.socket.Shutdown(System.Net.Sockets.SocketShutdown.Both);
-                    datahandler.connection.socket.Close();
-                    datahandler.connection.correctPassword = false;
-                    datahandler.connection.initalized = true;
+                    dataHandler.connection.correctPassword = false;
                 }
                 else
                 {
-                    datahandler.connection.AddToArray();
-                    datahandler.connection.correctPassword = true;
-                    datahandler.connection.socket.Send(Encoding.UTF8.GetBytes("ACCEPTED"));
-                    ResponseExpected = true;
+                    dataHandler.connection.AddToArray();
+                    dataHandler.connection.correctPassword = true;
 
-                    Type = RequestType.RegisterPlayer;
                     PlayerID = PongConnection.RegisteredClientIDs.Length + 1;
 
                     double[] temp = PongConnection.RegisteredClientIDs;
@@ -92,8 +89,8 @@ namespace Pong
                     }
 
                     PongConnection.RegisteredClientIDs = newArray;
-                    datahandler.connection.initalized = true;
                 }
+                dataHandler.connection.initalized = true;
 
                 return;
             }

@@ -10,9 +10,9 @@ namespace Pong
 {
     public abstract class Request
     {
-        protected byte[] bytes;
-        protected int a;
-
+        /// <summary>
+        /// If the request expects to be answered or not.
+        /// </summary>
         public bool ResponseExpected;
     }
 }

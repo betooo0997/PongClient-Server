@@ -206,10 +206,8 @@ namespace Pong
             if (PlayerID != 0)
             {
                 data = PlayerID + key;
-            }
-
-            if(data != "")
                 socket.Send(Encoding.UTF8.GetBytes(data));
+            }
         }
 
         /// <summary>
@@ -223,6 +221,9 @@ namespace Pong
                 return false;
         }
 
+        /// <summary>
+        /// Closes the connection to all connected sockets.
+        /// </summary>
         public static void CloseConnection()
         {
             if (ConnectionHandler.connections != null)

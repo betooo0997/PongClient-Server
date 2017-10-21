@@ -9,10 +9,21 @@ namespace Pong
 {
     public class DataHandler
     {
+        /// <summary>
+        /// The incoming data.
+        /// </summary>
         string data;
+
+        /// <summary>
+        /// The ConnectionHandler instance that created this DataHandler instance.
+        /// </summary>
         public ConnectionHandler connection { get; private set; }
 
-
+        /// <summary>
+        /// Class constructor.
+        /// </summary>
+        /// <param name="connection">The ConnectionHandler instance that created this DataHandler instance.</param>
+        /// <param name="data">The incoming data</param>
         public DataHandler(ConnectionHandler connection, string data)
         {
             this.connection = connection;
@@ -29,6 +40,10 @@ namespace Pong
             handleData.Start();
         }
 
+        /// <summary>
+        /// Method for the clietns instances.
+        /// Creates a Request instance to analyze the incoming data, a Response instance to create a valid answer to it and send it to the socket if required.
+        /// </summary>
         void HandleDataInClient()
         {
             RequestInClient request = new RequestInClient(data, this);
@@ -36,6 +51,10 @@ namespace Pong
             response.Post();
         }
 
+        /// <summary>
+        /// Method for the server instance.
+        /// Creates a Request instance to analyze the incoming data, a Response instance to create a valid answer to it and send it to the socket if required.
+        /// </summary>
         void HandleDataInServer()
         {
             RequestInServer request = new RequestInServer(data, this);

@@ -88,7 +88,7 @@ namespace Pong
 
             Console.WriteLine("Player Pos: " + Position.Y + "\nBall Pos: " + ballPosition.Y + "\nYDifference: " + yDifference);
 
-            return new Vector2(125 * x, yDifference);
+            return new Vector2(150 * x, yDifference);
         }
 
         public override void Update(GameTime gameTime)

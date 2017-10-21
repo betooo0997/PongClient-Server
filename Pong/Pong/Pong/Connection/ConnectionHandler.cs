@@ -9,13 +9,30 @@ namespace Pong
 {
     public class ConnectionHandler
     {
+        /// <summary>
+        /// Th existing connections of the PongInstance
+        /// </summary>
         public static ConnectionHandler[] connections;
 
+        /// <summary>
+        /// The connected Socket of the ConectionHandler instance.
+        /// </summary>
         public Socket socket;
 
+        /// <summary>
+        /// If the client has sent a password and it has been processed by the server.
+        /// </summary>
         public bool initalized = false;
+
+        /// <summary>
+        /// If the client's password is correct.
+        /// </summary>
         public bool correctPassword = false;
 
+        /// <summary>
+        /// Class constructor.
+        /// </summary>
+        /// <param name="socket">The connected socket</param>
         public ConnectionHandler(Socket socket)
         {
             this.socket = socket;
@@ -24,6 +41,9 @@ namespace Pong
             dataHandling.Start();
         }
 
+        /// <summary>
+        /// Main Thread of the ConnectionHandler Class. Checks Socket for new incoming data and creates a DataHandler instance for each incoming one.
+        /// </summary>
         void HandleConnectionData()
         {
             try
@@ -77,8 +97,11 @@ namespace Pong
                 Error();
                 Console.WriteLine(e.Message);
             }
-}
+        }
 
+        /// <summary>
+        /// Sends the ball position and direction vector to the client.
+        /// </summary>
         void SendBallDataToClient()
         {
             string data = "B " + Ball.Position.X + " " + Ball.Position.Y + " " + Ball.directionVector.X + " " + Ball.directionVector.Y + '!';
@@ -86,6 +109,9 @@ namespace Pong
             socket.Send(bytedata);
         }
 
+        /// <summary>
+        /// Sends the ball data to all connected clients.
+        /// </summary>
         public static void SendBallDataToAllClients()
         {
             try
@@ -102,13 +128,16 @@ namespace Pong
                     Ball.timeSinceLastClientSync = 0;
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Error();
                 Console.WriteLine(e.Message);
             }
         }
 
+        /// <summary>
+        /// Adds this ConnectionHandler insatnce to the array.
+        /// </summary>
         public void AddToArray()
         {
             if (connections == null)
@@ -126,6 +155,9 @@ namespace Pong
             }
         }
 
+        /// <summary>
+        /// Sends the score to all connnected clients.
+        /// </summary>
         public static void SendScoreToAllClients()
         {
             try
@@ -143,6 +175,9 @@ namespace Pong
             }
         }
 
+        /// <summary>
+        /// Called when a connection error occurs during the game. Disconnects all clients from the server.
+        /// </summary>
         public static void Error()
         {
             State_Menu.Singleton.targetState = State_Menu.Singleton;

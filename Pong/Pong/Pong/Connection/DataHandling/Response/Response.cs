@@ -11,7 +11,14 @@ namespace Pong
 {
     public abstract class Response
     {
+        /// <summary>
+        /// The Responses request instance.
+        /// </summary>
         protected Request request;
+
+        /// <summary>
+        /// The bytedata to be sent to the client-
+        /// </summary>
         protected byte[] bytedata;
         protected DataHandler dataHandler;
 

@@ -21,16 +21,29 @@ namespace Pong
         Color serverText = Color.Red;
         Color clientText = Color.White;
 
+        /// <summary>
+        /// The inputted data by the user. Used to set (server) or send password (client).
+        /// </summary>
         public string input;
 
+        /// <summary>
+        /// The error code to be showed on screen
+        /// </summary>
         public string info = "";
 
+        /// <summary>
+        /// The class constructor.
+        /// </summary>
         public State_Menu()
         {
             Start();
             Singleton = this;
         }
 
+        /// <summary>
+        /// Updates the Menu State.
+        /// </summary>
+        /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
         {
             if (Pong.currKeyState != Pong.prevKeyState)
@@ -96,6 +109,10 @@ namespace Pong
             base.Update(gameTime);
         }
 
+        /// <summary>
+        /// Draws the Menu State. 
+        /// </summary>
+        /// <param name="gameTime"></param>
         public override void Draw(GameTime gameTime)
         {
             spriteBatch.DrawString(Pong.font1, "MENU", new Vector2(200, 5), Color.White);

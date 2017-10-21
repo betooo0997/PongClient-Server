@@ -8,10 +8,19 @@ namespace Pong
 {
     public class RequestInClient : Request
     {
+        /// <summary>
+        /// The Request type of the Request.
+        /// </summary>
         public RequestType Type { get; private set; }
 
+        /// <summary>
+        /// The DataHandler instance that createt this Request instance.
+        /// </summary>
         DataHandler datahandler;
 
+        /// <summary>
+        /// The Request Type enum. Describes the type of a request.
+        /// </summary>
         public enum RequestType
         {
             SendingBallPosition,
@@ -19,12 +28,21 @@ namespace Pong
             Undefined
         }
 
+        /// <summary>
+        /// The class constructor.
+        /// </summary>
+        /// <param name="data">The incoming data to analyze.</param>
+        /// <param name="datahandler">The DataHandler instance that created this RequestClient instance.</param>
         public RequestInClient(string data, DataHandler datahandler)
         {
             this.datahandler = datahandler;
             GetInformation(data);
         }
 
+        /// <summary>
+        /// Analyzes the incoming data.
+        /// </summary>
+        /// <param name="data">The data to analyze.</param>
         void GetInformation(string data)
         {
             if (data == "CLOSE")

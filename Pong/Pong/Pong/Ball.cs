@@ -25,6 +25,9 @@ namespace Pong
         public static float ballSyncIntervall = 1.5f;
         public static float timeSinceBallSync = 0;
 
+        int startTime = 3;
+        double ellapsedTime = 0;
+
 
         public Ball(GraphicsDevice graphicsDevice)
         {
@@ -38,7 +41,7 @@ namespace Pong
             if (PongConnection.PlayerID == -1)
             {
                 Random random = new Random();
-                directionVector = Vector2.Normalize(new Vector2(50, (float)random.NextDouble() - 0.5f)) * 250;
+                directionVector = Vector2.Normalize(new Vector2(150, (float)random.NextDouble() - 0.5f)) * 100;
             }
             else
                 directionVector = new Vector2();
@@ -76,7 +79,10 @@ namespace Pong
         {
             if (PongConnection.running)
             {
-                Position += directionVector * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                if (ellapsedTime < startTime)
+                    ellapsedTime += gameTime.ElapsedGameTime.TotalSeconds;
+                else
+                    Position += directionVector * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
                 CheckBorderCollision(new Vector2(windowSize.X, windowSize.Y / 2), new Vector2(2, windowSize.Y), 1);
                 CheckBorderCollision(new Vector2(0, windowSize.Y / 2), new Vector2(2, windowSize.Y), 2);
@@ -103,7 +109,7 @@ namespace Pong
             {
                 Collision(Axis.X);
 
-                if(PongConnection.PlayerID == -1 && PlayerID != null)
+                if (PongConnection.PlayerID == -1 && PlayerID != null)
                     MakeGoal(Player.players[(int)PlayerID - 1]);
             }
 
@@ -131,7 +137,7 @@ namespace Pong
 
                     directionVector = player.UpdateDirectionVector(Position, x);
 
-                    if(PongConnection.PlayerID == -1)
+                    if (PongConnection.PlayerID == -1)
                         ConnectionHandler.SendBallDataToAllClients();
                 }
             }
